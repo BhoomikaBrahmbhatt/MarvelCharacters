@@ -2,5 +2,6 @@
     <string name="app_name">MARVEL CHARACTERS</string>
     <string name="error">Something went wrong, Please try again!!</string>
     <string name="network_error">Network is not available</string>
+    <string name="network_error_offline">Network is not available. Offline data showing.</string>
     <string name="data_load">All characters shown!!</string>
 </resources>

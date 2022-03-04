@@ -96,16 +96,19 @@ private lateinit var characterDao: CharactersDao
             offset=offset.minus(limit)
 
             //loading = false
-
-            CoroutineScope(Dispatchers.IO).launch {
-                val characters: List<Characters> = characterDao.getAll()
-                adapter.appendList(characters)
-                offset=characters.size
+            var charactersList: List<Characters>
+            CoroutineScope(Dispatchers.Default).launch {
+                charactersList= characterDao.getAll()
+                adapter.appendList(charactersList)
+                offset=charactersList.size
             }
-
+            if(offset>0)
+            {
+                Toast.makeText(this@MainActivity,getString(R.string.network_error_offline),Toast.LENGTH_LONG).show()
+            }
+            else
             Toast.makeText(this@MainActivity,getString(R.string.network_error),Toast.LENGTH_LONG).show()
         }
-
     }
 
 }
