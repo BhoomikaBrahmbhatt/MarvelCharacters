@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(){
     private var binding: ActivityMainBinding? = null
-    private val limit=10
+    private val limit=30
     var offset=0
     lateinit var viewModel: MainViewModel
     private val retrofitService = RetrofitService.getInstance()
