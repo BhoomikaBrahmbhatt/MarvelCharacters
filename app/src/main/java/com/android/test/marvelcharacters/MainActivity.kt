@@ -83,6 +83,12 @@ private lateinit var characterDao: CharactersDao
 
     private fun callCharacters(firstCall:Boolean) {
         if(Utils.isOnline(this)) {
+            if(firstCall)
+            {
+                CoroutineScope(Dispatchers.Default).launch {
+                    characterDao.deleteAll()
+                }
+            }
            viewModel.getAllCharacters(
                 Utils.value_apikey,
                 Utils.value_ts,
@@ -95,7 +101,7 @@ private lateinit var characterDao: CharactersDao
             if(offset>0)
             offset=offset.minus(limit)
 
-            //loading = false
+            loading = false
             var charactersList: List<Characters>
             CoroutineScope(Dispatchers.Default).launch {
                 charactersList= characterDao.getAll()
