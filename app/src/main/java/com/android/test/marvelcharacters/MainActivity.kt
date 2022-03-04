@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.android.test.marvelcharacters.adapter.CharacterAdapter
 import com.android.test.marvelcharacters.database.AppDatabase
+import com.android.test.marvelcharacters.database.Characters
 import com.android.test.marvelcharacters.database.CharactersDao
 import com.android.test.marvelcharacters.databinding.ActivityMainBinding
 import com.android.test.marvelcharacters.mvvm.MainRepository
@@ -17,6 +18,9 @@ import com.android.test.marvelcharacters.mvvm.MainViewModel
 import com.android.test.marvelcharacters.mvvm.MyViewModelFactory
 import com.android.test.marvelcharacters.mvvm.RetrofitService
 import com.android.test.marvelcharacters.utils.Utils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(){
     private var binding: ActivityMainBinding? = null
@@ -79,19 +83,6 @@ private lateinit var characterDao: CharactersDao
 
     private fun callCharacters(firstCall:Boolean) {
         if(Utils.isOnline(this)) {
-
-           /* if(firstCall)
-            {
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    val characters: List<User> = userDao.getAll()
-                    adapter.appendList(characters)
-                    offset=characters.size
-                }
-
-
-            }*/
-
            viewModel.getAllCharacters(
                 Utils.value_apikey,
                 Utils.value_ts,
@@ -104,9 +95,13 @@ private lateinit var characterDao: CharactersDao
             if(offset>0)
             offset=offset.minus(limit)
 
-            loading = false
+            //loading = false
 
-            //val users: List<User> = userDao.getAll()
+            CoroutineScope(Dispatchers.IO).launch {
+                val characters: List<Characters> = characterDao.getAll()
+                adapter.appendList(characters)
+                offset=characters.size
+            }
 
             Toast.makeText(this@MainActivity,getString(R.string.network_error),Toast.LENGTH_LONG).show()
         }
