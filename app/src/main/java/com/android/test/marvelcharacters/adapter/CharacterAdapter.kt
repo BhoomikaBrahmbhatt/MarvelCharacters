@@ -5,20 +5,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.test.marvelcharacters.database.Characters
 import com.android.test.marvelcharacters.databinding.AdapterCharactersBinding
-import com.android.test.marvelcharacters.mvvm.Results
 import com.bumptech.glide.Glide
 
 class CharacterAdapter : RecyclerView.Adapter<MainViewHolder>() {
-    var chapters = mutableListOf<Results>()
+    var characterList = mutableListOf<Characters>()
     lateinit var mcontext: Context
     @SuppressLint("NotifyDataSetChanged")
-    fun setChapterList(chapters: List<Results>) {
-        this.chapters = chapters.toMutableList()
+    fun setChapterList(characterList: List<Characters>) {
+        this.characterList = characterList.toMutableList()
         notifyDataSetChanged()
     }
-    fun appendList(chapters: List<Results>){
-        this.chapters.addAll(chapters.toMutableList())
+    fun appendList(characterList: List<Characters>){
+        this.characterList.addAll(characterList.toMutableList())
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -28,20 +28,16 @@ class CharacterAdapter : RecyclerView.Adapter<MainViewHolder>() {
         return MainViewHolder(binding)
     }
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        val chapter = chapters[position]
+        val chapter = characterList[position]
         val name=chapter.name
-        //val meaning = chapter.modified
-        //val summary = chapter.description
         holder.binding.name.text = "$name"
-        //holder.binding.meaning.text=meaning
-        //holder.binding.summary.text=summary
-        val imgurl=chapter.thumbnail!!.path+"."+chapter.thumbnail!!.extension
+        val imgurl=chapter.thumbnail
         Glide.with(holder.itemView.context).load(imgurl).into(
             holder.binding.imageview
         )
     }
     override fun getItemCount(): Int {
-        return chapters.size
+        return characterList.size
     }
 }
 class MainViewHolder(val binding: AdapterCharactersBinding) : RecyclerView.ViewHolder(binding.root) {

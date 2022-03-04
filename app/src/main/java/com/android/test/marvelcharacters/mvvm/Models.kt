@@ -14,7 +14,6 @@ data class MarvelCharacterData (
 
 )
 data class Thumbnail (
-
     @SerializedName("path"      ) var path      : String? = null,
     @SerializedName("extension" ) var extension : String? = null
 
