@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import android.widget.Toast
 
 object Utils {
 
@@ -37,5 +38,12 @@ object Utils {
             }
         }
         return false
+    }
+
+    fun showLog(tag : String, message:String){
+        Log.d(tag,message)
+    }
+    fun showToast(context: Context,message:String){
+        Toast.makeText(context,message, Toast.LENGTH_LONG).show()
     }
 }

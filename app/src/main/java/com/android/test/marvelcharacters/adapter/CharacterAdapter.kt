@@ -17,6 +17,7 @@ class CharacterAdapter : RecyclerView.Adapter<MainViewHolder>() {
         this.characterList = characterList.toMutableList()
         notifyDataSetChanged()
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun appendList(characterList: List<Characters>){
         this.characterList.addAll(characterList.toMutableList())
         notifyDataSetChanged()
@@ -31,8 +32,8 @@ class CharacterAdapter : RecyclerView.Adapter<MainViewHolder>() {
         val chapter = characterList[position]
         val name=chapter.name
         holder.binding.name.text = "$name"
-        val imgurl=chapter.thumbnail
-        Glide.with(holder.itemView.context).load(imgurl).into(
+        val marvelUrl=chapter.thumbnail
+        Glide.with(holder.itemView.context).load(marvelUrl).into(
             holder.binding.imageview
         )
     }
