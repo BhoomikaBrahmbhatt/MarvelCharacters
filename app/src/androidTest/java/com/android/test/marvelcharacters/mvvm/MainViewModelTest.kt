@@ -45,6 +45,7 @@ class MainViewModelTest : TestCase(){
             limit,
             offset,characterDao
         )
+       // viewModel.a
      val result = viewModel.mainCharactersList.getOrAwaitValue()
         assertNotNull(result)
 

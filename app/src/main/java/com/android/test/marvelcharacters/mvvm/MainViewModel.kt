@@ -24,8 +24,8 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
         hash: String,
         limit: Int,
         offset: Int,
-charDao: CharactersDao
-    ) = viewModelScope.launch{
+        charDao: CharactersDao
+    ) = viewModelScope.launch {
         val response = repository.getAllChapters(api_key, ts, hash, limit, offset)
         response.enqueue(object : Callback<MarvelCharacterData> {
             override fun onResponse(
@@ -38,17 +38,19 @@ charDao: CharactersDao
                     characterData?.also {
                         val chapters: ArrayList<Results> = characterData.results
                         val itr = chapters.listIterator()    // or, use `iterator()`
-                        Utils.limitCharacters =
-                            ((Utils.limitCharacters == 0) then {
-                                characterData.total
-                            } or Utils.limitCharacters) as Int
+                        characterData.total.also {
+                            if (it != null) {
+                                Utils.limitCharacters = it
+                            }
+                        }
+
 
                         while (itr.hasNext()) {
                             val result: Results = itr.next()
                             val thumbnailUtils = result.thumbnail
-                            var thumb =""
+                            var thumb = ""
                             thumbnailUtils?.also {
-                                 thumb = thumbnailUtils.path + "." + thumbnailUtils.extension
+                                thumb = thumbnailUtils.path + "." + thumbnailUtils.extension
                             }
                             val id = result.id
                             val name = result.name
@@ -64,7 +66,7 @@ charDao: CharactersDao
                             characterUser.add(characters)
                         }
                         mainCharactersList.postValue(characterUser)
-                    } ?: run{
+                    } ?: run {
                         errorMessage.postValue("Null Exist")
                     }
                 }
