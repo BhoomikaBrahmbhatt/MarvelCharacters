@@ -2,6 +2,7 @@ package com.android.test.marvelcharacters.mvvm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android.test.marvelcharacters.database.Characters
 import com.android.test.marvelcharacters.database.CharactersDao
 import com.android.test.marvelcharacters.utils.Utils
@@ -13,7 +14,7 @@ import retrofit2.Response
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
 
-    val chaptersList = MutableLiveData<List<Characters>>()
+    val mainCharactersList = MutableLiveData<List<Characters>>()
     val errorMessage = MutableLiveData<String>()
     val characterUser: MutableList<Characters> = mutableListOf()
 
@@ -23,8 +24,8 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
         hash: String,
         limit: Int,
         offset: Int,
-        charDao: CharactersDao
-    ) {
+charDao: CharactersDao
+    ) = viewModelScope.launch{
         val response = repository.getAllChapters(api_key, ts, hash, limit, offset)
         response.enqueue(object : Callback<MarvelCharacterData> {
             override fun onResponse(
@@ -62,7 +63,7 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
                             )
                             characterUser.add(characters)
                         }
-                        chaptersList.postValue(characterUser)
+                        mainCharactersList.postValue(characterUser)
                     } ?: run{
                         errorMessage.postValue("Null Exist")
                     }

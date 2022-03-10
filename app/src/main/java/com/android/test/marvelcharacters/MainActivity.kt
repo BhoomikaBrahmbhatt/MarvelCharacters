@@ -36,21 +36,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            MyViewModelFactory(MainRepository(retrofitService))
-        ).get(MainViewModel::class.java)
 
         characterDao = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "database-marvel"
         ).build().charactersDao()
 
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory(MainRepository(retrofitService))
+        ).get(MainViewModel::class.java)
 
         binding.recyclerview.layoutManager = GridLayoutManager(applicationContext, 2)
 
         binding.recyclerview.adapter = adapter
-        viewModel.chaptersList.observe(this, {
+        viewModel.mainCharactersList.observe(this, {
             adapter.setChapterList(it)
             loading = false
         })
@@ -90,8 +90,7 @@ class MainActivity : AppCompatActivity() {
                 Utils.value_ts,
                 Utils.value_hash,
                 limit,
-                offset,
-                characterDao
+                offset,characterDao
             )
         } else {
             if (offset > 0)
