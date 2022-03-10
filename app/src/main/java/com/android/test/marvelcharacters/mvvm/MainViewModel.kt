@@ -18,6 +18,26 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     val errorMessage = MutableLiveData<String>()
     val characterUser: MutableList<Characters> = mutableListOf()
 
+    fun addCharacter(
+        charDao: CharactersDao,
+        id: Int, name: String, thumb: String
+    ) {
+        val characters = Characters(
+            0,
+            id,
+            name,
+            thumb
+        )
+        charDao.insertAll(
+            characters
+        )
+    }
+
+    fun getCharactersDB( charDao: CharactersDao){
+        val characterDBUser= charDao.getAll().toMutableList()
+        mainCharactersList.postValue(characterDBUser)
+    }
+
     fun getAllCharacters(
         api_key: String,
         ts: Int,
