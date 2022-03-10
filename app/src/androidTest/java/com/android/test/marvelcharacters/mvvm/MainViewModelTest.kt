@@ -41,7 +41,7 @@ class MainViewModelTest : TestCase() {
 
     @Test
     fun testModel() {
-        viewModel.addCharacter(characterDao, 999, "TestName", "TestUrl")
+        viewModel.addCharacter(characterDao, 999, "TestName", "http://testurl.com")
         /* viewModel.getAllCharacters(
              Utils.value_apikey,
              Utils.value_ts,
@@ -51,11 +51,9 @@ class MainViewModelTest : TestCase() {
          )*/
         viewModel.getCharactersDB(characterDao)
         val result = viewModel.mainCharactersList.getOrAwaitValue().find {
-            it.name == "TestName" && it.thumbnail == "TestUrl"
+            it.name == "TestName" && it.thumbnail == "http://testurl.com"
         }
 
         assertThat(result != null, equalTo(true))
-
-
     }
 }
